@@ -1,0 +1,40 @@
+# Builds and logs
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+dist/
+tmp/
+temp/
+.cache/
+*.tgz
+build/
+public/build/
+public/dist/
+.sass-cache/
+.cache/
+.next/
+out/
+.nuxt/
+jspm_packages/
+bower_components/
+logs/
+*.log
+.idea/
+*.sln.iml
+
+# IDEs
+.idea/
+*.iws
+*.ipr
+*.iml
+out/
+.vscode/
+.history/
+*.code-workspace
+
+# Secrets
+#.env
+#.env.*.local
+
