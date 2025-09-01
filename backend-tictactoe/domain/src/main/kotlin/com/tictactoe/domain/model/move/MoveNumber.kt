@@ -2,7 +2,7 @@ package com.tictactoe.domain.model.move
 
 import com.tictactoe.domain.exception.InvalidParameterException
 
-class MoveNumber(val value: Int) {
+class MoveNumber private constructor(val value: Int) {
     companion object {
         fun create(value: Int): MoveNumber {
             if (value < 1 || value > 9) {
