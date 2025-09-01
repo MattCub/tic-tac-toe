@@ -1,0 +1,8 @@
+package com.tictactoe.domain.repositories.match
+
+import com.tictactoe.domain.model.match.Match
+
+interface MatchRepository {
+
+    fun  create(match: Match): Match
+}

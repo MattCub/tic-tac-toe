@@ -1,0 +1,26 @@
+package com.tictactoe.infrastructure.postgres.match
+
+import com.tictactoe.domain.model.match.Match
+import com.tictactoe.domain.repositories.match.MatchRepository
+import com.tictactoe.infrastructure.postgres.match.mapper.MatchMapper
+import com.tictactoe.infrastructure.postgres.match.repository.MatchJpaRepository
+import org.slf4j.LoggerFactory
+import org.springframework.stereotype.Repository
+
+@Repository
+class PostgresMatchRepositoryImpl(private val jpaRepository: MatchJpaRepository) : MatchRepository {
+
+    private val logger = LoggerFactory.getLogger(PostgresMatchRepositoryImpl::class.java)
+
+    override fun create(match: Match): Match {
+        logger.debug("Saving match to the database: {}", match)
+        val entityToSave = MatchMapper.toEntity(match)
+        val savedEntity = jpaRepository.save(entityToSave)
+        return MatchMapper.toDomain(savedEntity)
+    }
+
+    fun deleteById(id: Long) {
+        logger.debug("Deleting match with id: {}", id)
+        jpaRepository.deleteById(id)
+    }
+}
