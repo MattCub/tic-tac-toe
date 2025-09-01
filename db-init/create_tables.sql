@@ -1,8 +1,6 @@
-CREATE TYPE match_status AS ENUM ('CREATED', 'IN_PROGRESS', 'ENDED');
-
 CREATE TABLE match (
     id SERIAL PRIMARY KEY,
-    status match_status NOT NULL,
+    status VARCHAR(20) NOT NULL,
     winner VARCHAR(1),
     created_at TIMESTAMP NOT NULL
 );

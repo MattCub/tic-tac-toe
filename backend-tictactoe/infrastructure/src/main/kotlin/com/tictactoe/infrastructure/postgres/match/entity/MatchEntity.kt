@@ -1,6 +1,5 @@
 package com.tictactoe.infrastructure.postgres.match.entity
 
-import com.tictactoe.domain.model.match.MatchStatus
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
@@ -11,9 +10,8 @@ data class MatchEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    val status: MatchStatus,
+    @Column(name = "status", length = 20)
+    val status: String,
 
     @Column(name = "winner", length = 1)
     val winner: String? = null,
