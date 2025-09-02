@@ -10,7 +10,17 @@ class Player private constructor(
             if (id.isBlank()) {
                 throw MandatoryParameterException("id")
             }
-            return Player(id)
+            return Player(id.uppercase())
         }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || other !is Player) return false
+        return id == other.id
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
     }
 }

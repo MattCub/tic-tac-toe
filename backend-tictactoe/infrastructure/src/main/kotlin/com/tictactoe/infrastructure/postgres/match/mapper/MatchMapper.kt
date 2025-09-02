@@ -8,6 +8,7 @@ import com.tictactoe.domain.model.player.Player
 import com.tictactoe.infrastructure.postgres.match.entity.MatchEntity
 
 object MatchMapper {
+    
     fun toEntity(match: Match): MatchEntity {
         return MatchEntity(
             id = match.id?.value,

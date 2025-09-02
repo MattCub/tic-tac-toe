@@ -26,4 +26,19 @@ class PostgresMatchRepositoryImplIntegrationTest @Autowired constructor(
 
         matchRepository.deleteById(savedMatch.id!!.value)
     }
+
+    @Test
+    fun `should find match by id after creation`() {
+        val match = Match.Builder().build()
+        val savedMatch = matchRepository.create(match)
+
+        val foundMatch = matchRepository.findById(savedMatch.id!!.value)
+
+        assertNotNull(foundMatch)
+        assertEquals(savedMatch.id, foundMatch!!.id)
+        assertEquals(savedMatch.status, foundMatch.status)
+        assertEquals(savedMatch.winner, foundMatch.winner)
+
+        matchRepository.deleteById(savedMatch.id!!.value)
+    }
 }
