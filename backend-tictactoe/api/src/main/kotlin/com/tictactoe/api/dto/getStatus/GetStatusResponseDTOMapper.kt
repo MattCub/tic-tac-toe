@@ -8,6 +8,7 @@ object GetStatusResponseDTOMapper {
         return GetStatusResponseDTO(
             status = getStatusResult.status.name,
             currentTurn = getStatusResult.currentTurn.id,
+            winner = getStatusResult.winner?.id,
             overall = getStatusResult.overall.matrix.map { rows -> rows.map { it?.id ?: "-" } }
         )
     }
