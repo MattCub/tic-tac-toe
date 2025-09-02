@@ -2,6 +2,7 @@ package com.tictactoe.application.usecase
 
 import com.tictactoe.domain.exception.NotFoundException
 import com.tictactoe.domain.model.match.Match
+import com.tictactoe.domain.model.match.MatchStatus
 import com.tictactoe.domain.model.move.BoardSummary
 import com.tictactoe.domain.model.move.Move
 import com.tictactoe.domain.model.move.MoveNumber
@@ -35,7 +36,7 @@ class CreateMoveUseCaseImpl(
             val match: Match = matchRepository.findById(params.matchId.value)
                 ?: throw NotFoundException("match", params.matchId.value.toString())
             val moves: List<Move> = moveRepository.findByMatchId(params.matchId.value)
-            moveDomainService.validateMove(moves, params.x, params.y, params.player)
+            moveDomainService.validateMove(moves, params.x, params.y, params.player, match.status)
             val newMove = Move.Builder()
                 .match(match)
                 .player(params.player)
@@ -52,11 +53,21 @@ class CreateMoveUseCaseImpl(
             val updatedMoves: List<Move> = moves + savedMove
             val boardSummary = BoardSummary.fromMoves(updatedMoves)
             val (status, winner) = moveDomainService.checkGameStatus(boardSummary)
+            if (status != match.status) {
+                val updateMatch: Match = Match.Builder()
+                    .id(match.id!!)
+                    .status(status)
+                    .winner(if (status == MatchStatus.ENDED) winner else null)
+                    .createdAt(match.createdAt)
+                    .build()
+                matchRepository.update(updateMatch)
+                logger.info("Match {} status updated to {}", match.id, status)
+            }
             return CreateMoveResult.Builder()
                 .moveId(savedMove.id!!)
                 .status(status)
                 .winner(winner)
-                .moves(updatedMoves)
+                .boardSummary(updatedMoves)
                 .build()
         } catch (ex: Exception) {
             logger.error(

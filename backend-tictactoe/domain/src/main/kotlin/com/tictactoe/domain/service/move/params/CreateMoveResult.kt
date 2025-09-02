@@ -17,17 +17,17 @@ class CreateMoveResult private constructor(
         private var moveId: MoveId? = null
         private var status: MatchStatus? = null
         private var winner: Player? = null
-        private var moves: List<Move>? = null
+        private var boardSummary: BoardSummary? = null
 
         fun moveId(moveId: MoveId) = apply { this.moveId = moveId }
         fun status(status: MatchStatus) = apply { this.status = status }
         fun winner(winner: Player?) = apply { this.winner = winner }
-        fun moves(moves: List<Move>) = apply { this.moves = moves }
+        fun boardSummary(moves: List<Move>) = apply { this.boardSummary = BoardSummary.fromMoves(moves) }
 
         fun build(): CreateMoveResult {
             val moveId = this.moveId ?: throw MandatoryParameterException("moveId")
             val status = this.status ?: throw MandatoryParameterException("status")
-            val boardSummary = BoardSummary.fromMoves(this.moves ?: emptyList())
+            val boardSummary = boardSummary ?: throw MandatoryParameterException("boardSummary")
             return CreateMoveResult(moveId, status, winner, boardSummary)
         }
     }

@@ -1,5 +1,6 @@
 package com.tictactoe.domain.service.move
 
+import com.tictactoe.domain.exception.InvalidMoveException
 import com.tictactoe.domain.model.match.Match
 import com.tictactoe.domain.model.match.MatchId
 import com.tictactoe.domain.model.match.MatchStatus
@@ -30,8 +31,14 @@ class MoveDomainServiceTest {
     @Test
     fun `validateMove throws exception if cell is occupied`() {
         val moves = listOf(move(2, 2, playerX, 1))
-        val exception = assertThrows(com.tictactoe.domain.exception.InvalidMoveException::class.java) {
-            service.validateMove(moves, MovePosition.create(2), MovePosition.create(2), playerX)
+        val exception = assertThrows(InvalidMoveException::class.java) {
+            service.validateMove(
+                moves,
+                MovePosition.create(2),
+                MovePosition.create(2),
+                playerX,
+                MatchStatus.IN_PROGRESS
+            )
         }
         assertEquals("The square is already occupied.", exception.message)
     }
@@ -39,17 +46,44 @@ class MoveDomainServiceTest {
     @Test
     fun `validateMove throws exception if board is full`() {
         val moves = (1..3).flatMap { x -> (1..3).map { y -> move(x, y, playerX, ((x - 1) * 3 + y)) } }
-        val exception = assertThrows(com.tictactoe.domain.exception.InvalidMoveException::class.java) {
-            service.validateMove(moves, MovePosition.create(2), MovePosition.create(2), playerX)
+        val exception = assertThrows(InvalidMoveException::class.java) {
+            service.validateMove(
+                moves,
+                MovePosition.create(2),
+                MovePosition.create(2),
+                playerX,
+                MatchStatus.IN_PROGRESS
+            )
         }
         assertEquals("The match is over. No more moves allowed.", exception.message)
+    }
+
+    @Test
+    fun `validateMove throws exception if match is in status ENDED`() {
+        val moves = (1..3).flatMap { x -> (1..3).map { y -> move(x, y, playerX, ((x - 1) * 3 + y)) } }
+        val exception = assertThrows(InvalidMoveException::class.java) {
+            service.validateMove(
+                moves,
+                MovePosition.create(2),
+                MovePosition.create(2),
+                playerX,
+                MatchStatus.ENDED
+            )
+        }
+        assertEquals("The match is over.", exception.message)
     }
 
     @Test
     fun `validateMove does not throw for valid move`() {
         val moves = listOf(move(1, 1, playerX, 1))
         assertDoesNotThrow {
-            service.validateMove(moves, MovePosition.create(1), MovePosition.create(3), playerO)
+            service.validateMove(
+                moves,
+                MovePosition.create(1),
+                MovePosition.create(3),
+                playerO,
+                MatchStatus.IN_PROGRESS
+            )
         }
     }
 

@@ -28,8 +28,10 @@ class MoveDomainService {
         moves: List<Move>,
         x: MovePosition,
         y: MovePosition,
-        currentPlayer: Player
+        currentPlayer: Player,
+        matchStatus: MatchStatus
     ) {
+        if (matchStatus == MatchStatus.ENDED) throw InvalidMoveException("The match is over.")
         if (moves.size >= 9) throw InvalidMoveException("The match is over. No more moves allowed.")
         if (x.value !in 1..3 || y.value !in 1..3) throw InvalidMoveException("Move position out of bounds.")
         if (moves.any { it.x.value == x.value && it.y.value == y.value }) throw InvalidMoveException("The square is already occupied.")

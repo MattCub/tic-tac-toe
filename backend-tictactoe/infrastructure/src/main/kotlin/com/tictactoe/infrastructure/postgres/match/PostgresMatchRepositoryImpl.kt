@@ -26,6 +26,13 @@ class PostgresMatchRepositoryImpl(private val jpaRepository: MatchJpaRepository)
             .orElse(null)
     }
 
+    override fun update(match: Match): Match {
+        logger.debug("Updating match in the database: {}", match)
+        val entityToUpdate = MatchMapper.toEntity(match)
+        val updatedEntity = jpaRepository.save(entityToUpdate)
+        return MatchMapper.toDomain(updatedEntity)
+    }
+
     fun deleteById(id: Long) {
         logger.debug("Deleting match with id: {}", id)
         jpaRepository.deleteById(id)

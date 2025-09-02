@@ -5,7 +5,7 @@ import com.tictactoe.domain.model.match.MatchId
 import com.tictactoe.domain.model.move.MovePosition
 import com.tictactoe.domain.model.player.Player
 
-class CreateMoveParams private constructor(
+data class CreateMoveParams(
     val matchId: MatchId,
     val player: Player,
     val x: MovePosition,

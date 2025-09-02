@@ -2,6 +2,7 @@ import com.tictactoe.application.usecase.CreateMoveUseCaseImpl
 import com.tictactoe.domain.exception.NotFoundException
 import com.tictactoe.domain.model.match.Match
 import com.tictactoe.domain.model.match.MatchId
+import com.tictactoe.domain.model.match.MatchStatus
 import com.tictactoe.domain.model.move.*
 import com.tictactoe.domain.model.player.Player
 import com.tictactoe.domain.repositories.match.MatchRepository
@@ -47,7 +48,7 @@ class CreateMoveUseCaseImplTest {
         val newMove = Move.Builder().id(moveId).match(match).player(player).x(x).y(y).moveNumber(moveNumber).build()
         val updatedMoves = listOf(newMove)
         val boardSummary = BoardSummary.fromMoves(updatedMoves)
-        val status = com.tictactoe.domain.model.match.MatchStatus.IN_PROGRESS
+        val status = MatchStatus.IN_PROGRESS
         val winner: Player? = null
         val params = CreateMoveParams.Builder()
             .matchId(matchId)
@@ -70,7 +71,7 @@ class CreateMoveUseCaseImplTest {
         assertEquals(boardSummary.totalMoves, result.boardSummary.totalMoves)
         verify(matchRepository).findById(matchId.value)
         verify(moveRepository).findByMatchId(matchId.value)
-        verify(moveDomainService).validateMove(moves, x, y, player)
+        verify(moveDomainService).validateMove(moves, x, y, player, MatchStatus.CREATED)
         verify(moveRepository).create(any())
         verify(moveDomainService).checkGameStatus(any())
     }
@@ -110,7 +111,8 @@ class CreateMoveUseCaseImplTest {
                 moves,
                 x,
                 y,
-                player
+                player,
+                MatchStatus.CREATED
             )
         ).thenThrow(IllegalArgumentException("Invalid move"))
 
@@ -120,6 +122,6 @@ class CreateMoveUseCaseImplTest {
         assertEquals("Invalid move", exception.message)
         verify(matchRepository).findById(matchId.value)
         verify(moveRepository).findByMatchId(matchId.value)
-        verify(moveDomainService).validateMove(moves, x, y, player)
+        verify(moveDomainService).validateMove(moves, x, y, player, MatchStatus.CREATED)
     }
 }

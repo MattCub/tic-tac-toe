@@ -5,6 +5,7 @@ import com.tictactoe.api.dto.createMatch.CreateMatchResponseDTOMapper
 import com.tictactoe.api.dto.createMove.CreateMoveParamsMapper
 import com.tictactoe.api.dto.createMove.CreateMoveRequestDTO
 import com.tictactoe.api.dto.createMove.CreateMoveResponseDTO
+import com.tictactoe.api.dto.createMove.CreateMoveResponseDTOMapper
 import com.tictactoe.domain.model.match.MatchId
 import com.tictactoe.domain.service.match.CreateMatchUseCase
 import com.tictactoe.domain.service.move.CreateMoveUseCase
@@ -38,6 +39,6 @@ class MatchController(
                 request
             )
         )
-        return ResponseEntity.ok(null)
+        return ResponseEntity.ok(CreateMoveResponseDTOMapper.toDTO(result))
     }
 }

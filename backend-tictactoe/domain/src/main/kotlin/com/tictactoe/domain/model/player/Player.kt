@@ -10,7 +10,7 @@ class Player private constructor(
             if (id.isBlank()) {
                 throw MandatoryParameterException("id")
             }
-            return Player(id)
+            return Player(id.uppercase())
         }
     }
 
