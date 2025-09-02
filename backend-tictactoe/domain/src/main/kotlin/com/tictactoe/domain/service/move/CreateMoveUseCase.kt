@@ -1,9 +1,9 @@
 package com.tictactoe.domain.service.move
 
-import com.tictactoe.domain.model.move.Move
+import com.tictactoe.domain.service.move.params.CreateMoveParams
+import com.tictactoe.domain.service.move.params.CreateMoveResult
 
 interface CreateMoveUseCase {
 
-    fun execute(): Move
-    
+    fun execute(params: CreateMoveParams): CreateMoveResult
 }

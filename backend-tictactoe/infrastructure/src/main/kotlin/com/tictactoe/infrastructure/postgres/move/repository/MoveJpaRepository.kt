@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface MoveJpaRepository : JpaRepository<MoveEntity, Long>
+interface MoveJpaRepository : JpaRepository<MoveEntity, Long> {
+    fun findByMatchId(matchId: Long): List<MoveEntity>
+}

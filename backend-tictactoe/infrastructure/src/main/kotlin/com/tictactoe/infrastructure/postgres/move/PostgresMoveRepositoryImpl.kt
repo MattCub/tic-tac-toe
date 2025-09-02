@@ -19,6 +19,12 @@ class PostgresMoveRepositoryImpl(private val jpaRepository: MoveJpaRepository) :
         return MoveMapper.toDomain(savedEntity)
     }
 
+    override fun findByMatchId(matchId: Long): List<Move> {
+        logger.debug("Finding moves for matchId: {}", matchId)
+        val entities = jpaRepository.findByMatchId(matchId)
+        return entities.map { MoveMapper.toDomain(it) }
+    }
+
     fun deleteById(id: Long) {
         logger.debug("Deleting move with id: {}", id)
         jpaRepository.deleteById(id)

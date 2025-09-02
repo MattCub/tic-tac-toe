@@ -19,6 +19,13 @@ class PostgresMatchRepositoryImpl(private val jpaRepository: MatchJpaRepository)
         return MatchMapper.toDomain(savedEntity)
     }
 
+    override fun findById(id: Long): Match? {
+        logger.debug("Finding match by id: {}", id)
+        return jpaRepository.findById(id)
+            .map { MatchMapper.toDomain(it) }
+            .orElse(null)
+    }
+
     fun deleteById(id: Long) {
         logger.debug("Deleting match with id: {}", id)
         jpaRepository.deleteById(id)
