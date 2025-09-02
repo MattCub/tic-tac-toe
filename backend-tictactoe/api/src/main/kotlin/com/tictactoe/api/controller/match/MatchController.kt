@@ -6,8 +6,11 @@ import com.tictactoe.api.dto.createMove.CreateMoveParamsMapper
 import com.tictactoe.api.dto.createMove.CreateMoveRequestDTO
 import com.tictactoe.api.dto.createMove.CreateMoveResponseDTO
 import com.tictactoe.api.dto.createMove.CreateMoveResponseDTOMapper
+import com.tictactoe.api.dto.getStatus.GetStatusResponseDTO
+import com.tictactoe.api.dto.getStatus.GetStatusResponseDTOMapper
 import com.tictactoe.domain.model.match.MatchId
 import com.tictactoe.domain.service.match.CreateMatchUseCase
+import com.tictactoe.domain.service.match.GetStatusUseCase
 import com.tictactoe.domain.service.move.CreateMoveUseCase
 import com.tictactoe.domain.service.move.params.CreateMoveResult
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -20,7 +23,8 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class MatchController(
     val createMatchUseCase: CreateMatchUseCase,
-    val createMoveUseCase: CreateMoveUseCase
+    val createMoveUseCase: CreateMoveUseCase,
+    val getStatusUseCase: GetStatusUseCase
 ) {
     @PostMapping("/create")
     fun create(): ResponseEntity<CreateMatchResponseDTO> {
@@ -40,5 +44,12 @@ class MatchController(
             )
         )
         return ResponseEntity.ok(CreateMoveResponseDTOMapper.toDTO(result))
+    }
+
+    @GetMapping("/{matchId}/status")
+    fun status(
+        @PathVariable matchId: Long
+    ): ResponseEntity<GetStatusResponseDTO> {
+        return ResponseEntity.ok(GetStatusResponseDTOMapper.toDTO(getStatusUseCase.execute(MatchId.create(matchId))))
     }
 }
