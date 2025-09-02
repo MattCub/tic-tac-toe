@@ -17,4 +17,12 @@ class BoardSummary private constructor(
             return BoardSummary(board, moves.size)
         }
     }
+
+    fun getCurrentTurn(): Player {
+        return if (totalMoves % 2 == 0) {
+            Player.create("X")
+        } else {
+            Player.create("O")
+        }
+    }
 }

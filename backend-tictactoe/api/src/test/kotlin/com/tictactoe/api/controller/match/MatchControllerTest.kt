@@ -1,6 +1,5 @@
 package com.tictactoe.api.controller.match
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.tictactoe.api.dto.createMove.CreateMoveRequestDTO
 import com.tictactoe.api.testutil.MockMvcTest
 import com.tictactoe.domain.exception.InvalidMoveException
@@ -9,12 +8,11 @@ import com.tictactoe.domain.exception.NotFoundException
 import com.tictactoe.domain.model.match.Match
 import com.tictactoe.domain.model.match.MatchId
 import com.tictactoe.domain.model.match.MatchStatus
-import com.tictactoe.domain.model.move.Move
-import com.tictactoe.domain.model.move.MoveId
-import com.tictactoe.domain.model.move.MoveNumber
-import com.tictactoe.domain.model.move.MovePosition
+import com.tictactoe.domain.model.move.*
 import com.tictactoe.domain.model.player.Player
 import com.tictactoe.domain.service.match.CreateMatchUseCase
+import com.tictactoe.domain.service.match.GetStatusUseCase
+import com.tictactoe.domain.service.match.params.GetStatusResult
 import com.tictactoe.domain.service.move.CreateMoveUseCase
 import com.tictactoe.domain.service.move.params.CreateMoveResult
 import org.junit.jupiter.api.Test
@@ -36,6 +34,9 @@ class MatchControllerTest : MockMvcTest() {
 
     @MockitoBean
     private lateinit var mockCreateMoveUseCase: CreateMoveUseCase
+
+    @MockitoBean
+    private lateinit var mockGetStatusUseCase: GetStatusUseCase
 
 
     @Test
@@ -143,5 +144,35 @@ class MatchControllerTest : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("Conflict"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Invalid move"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.exception").value("InvalidMoveException"))
+    }
+
+    @Test
+    fun `status should return ResponseEntity with correct DTO`() {
+        val match: Match = Match.Builder()
+            .id(MatchId.create(123L))
+            .status(MatchStatus.IN_PROGRESS)
+            .build()
+        val move = Move.Builder()
+            .id(MoveId.create(1L))
+            .match(match)
+            .player(Player.create("x"))
+            .x(MovePosition.create(1))
+            .y(MovePosition.create(2))
+            .moveNumber(MoveNumber.create(1))
+            .build()
+        val expectedResult: GetStatusResult = GetStatusResult.Builder()
+            .status(MatchStatus.IN_PROGRESS)
+            .currentTurn(Player.create("X"))
+            .overall(BoardSummary.fromMoves(listOf(move)))
+            .build()
+        Mockito.`when`(mockGetStatusUseCase.execute(any())).thenReturn(expectedResult)
+
+        perform(
+            MockMvcRequestBuilders.get("/match/{matchId}/status", 123L)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("IN_PROGRESS"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.currentTurn").value("X"))
     }
 }
