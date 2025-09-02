@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './Home/Home.jsx'
 import Match from './Match/Match.jsx';
-import styles from './App.module.css'
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/" element={<Home />} />
       </Routes>
+      <ToastContainer />
     </BrowserRouter>
   );
 }
