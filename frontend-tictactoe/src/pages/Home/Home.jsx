@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button/Button";
+import Loading from "../../components/Loading/Loading";
 import useCreateMatch from "../../api/useCreateMatch";
 import styles from "./Home.module.css";
 
@@ -16,8 +17,14 @@ const Home = () => {
 
   return (
     <div className={styles.Home}>
-      <h1 className={styles.Home_title}>TIC TAC TOE GAME</h1>
-      <Button onClick={handleStartGame} label={"Start Game"} />
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <h1 className={styles.Home_title}>TIC TAC TOE GAME</h1>
+          <Button onClick={handleStartGame} label={"Start Game"} />
+        </>
+      )}
     </div>
   );
 };

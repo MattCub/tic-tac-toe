@@ -1,0 +1,10 @@
+.CurrentTurn {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    column-gap: 10px;
+    align-items: center;
+    background-color: var(--background-dark);
+    color: var(--text-light);
+    padding: 10px;
+}

@@ -19,7 +19,8 @@ const useApiPost = (url) => {
         body: JSON.stringify(body),
       });
       if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
+			    const error = await response.json();
+				throw new Error(`Error: ${error.message}`);
       }
       const result = await response.json();
       setData(result);
