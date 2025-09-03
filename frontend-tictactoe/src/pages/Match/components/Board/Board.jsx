@@ -2,14 +2,15 @@ import PropTypes from "prop-types";
 import Square from "../Square/Square";
 import styles from "./Board.module.css";
 
-const Board = ({ boardSummary }) => {
+const Board = ({ boardSummary, onSquareClick, disabled }) => {
   return (
     <div className={styles.Board}>
       {Array.from({ length: 9 }, (_, i) => (
         <Square
           key={i}
           symbol={boardSummary ? boardSummary[i] : null}
-          onClick={() => console.log("Clicked")}
+          onClick={disabled ? undefined : () => onSquareClick(i)}
+          disabled={disabled}
         />
       ))}
     </div>
@@ -17,7 +18,9 @@ const Board = ({ boardSummary }) => {
 };
 
 Board.propTypes = {
-    boardSummary: PropTypes.arrayOf(PropTypes.string)
+    boardSummary: PropTypes.arrayOf(PropTypes.string),
+    onSquareClick: PropTypes.func,
+    disabled: PropTypes.bool
 };
 
 export default Board;

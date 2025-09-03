@@ -28,7 +28,6 @@ const useApiGet = (url, options = {}) => {
 			setData(result);
 			return result;
 		} catch (err) {
-            debugger;
 			setError(err.message);
 			toast.error(err.message);
 			return null;

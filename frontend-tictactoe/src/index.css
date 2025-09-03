@@ -2,13 +2,9 @@ body {
   margin: 0px;
   font-family: "Londrina Solid", sans-serif;
 
-  --primary: #C4D9FF;
-  --secondary: #33341E;
-
   --background: #000000;
   --background-light: #FFF5E6;
-  --background-dark: #C4D9FF80;;
-  --background-dark-green: #33341E;
+  --background-dark: #C4D9FF80;
 
   --text: #C4D9FF;
   --text-dark: #8B8B8B;
@@ -59,13 +55,6 @@ h4 {
 
 h5 {
   font-size: 20px;
-  margin-block-start: 0px;
-  margin-block-end: 0px;
-  font-weight: 400;
-}
-  
-h6 {
-  font-size: 18px;
   margin-block-start: 0px;
   margin-block-end: 0px;
   font-weight: 400;
