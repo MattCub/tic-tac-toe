@@ -36,7 +36,11 @@ describe('useApiPost', () => {
 
 	it('should handle error and call toast', async () => {
 		const { toast } = require('react-toastify');
-		global.fetch = jest.fn().mockResolvedValue({ ok: false, status: 500 });
+			global.fetch = jest.fn().mockResolvedValue({
+				ok: false,
+				status: 500,
+				json: () => Promise.resolve({ message: 'Internal Server Error' })
+			});
 
 		const { result } = renderHook(() => useApiPost(url));
 
@@ -47,8 +51,8 @@ describe('useApiPost', () => {
 
 		expect(data).toBeNull();
 		expect(result.current.data).toBeNull();
-		expect(result.current.error).toBe('Error: 500');
-		expect(toast.error).toHaveBeenCalledWith('Error: 500');
+		expect(result.current.error).toBe('Error: Internal Server Error');
+		expect(toast.error).toHaveBeenCalledWith('Error: Internal Server Error');
 		expect(result.current.loading).toBe(false);
 	});
 });

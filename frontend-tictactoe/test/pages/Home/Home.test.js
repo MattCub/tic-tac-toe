@@ -1,6 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import Home from '../../../src/pages/Home/Home';
-import React from 'react';
 
 jest.mock('react-router-dom', () => ({
   useNavigate: jest.fn()
