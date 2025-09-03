@@ -11,6 +11,7 @@ object CreateMoveResponseDTOMapper {
             moveId = createMoveResult.moveId.value,
             status = createMoveResult.status.name,
             winner = createMoveResult.winner?.id,
+            currentTurn = createMoveResult.boardSummary.getCurrentTurn().id,
             overall = createMoveResult.boardSummary.matrix.map { rows -> rows.map { it?.id ?: "-" } }
         )
     }

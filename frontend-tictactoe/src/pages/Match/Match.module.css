@@ -1,18 +1,5 @@
 .Match {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     height: 100vh;
-}
-
-.Match_header {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-}
-
-.Match_current_turn {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
 }
